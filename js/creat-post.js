@@ -21,7 +21,7 @@ function cretePostDescription() {
     url:`photos/${createUrl()}.jpg`,
     description:'В идеале, данные должны генерироваться случайно',
     likes:createRandomNumber(15,200),
-    comments:createComments(createRandomNumber(1,4))
+    comments:createComments(createRandomNumber(1,21))
   };
 }
 

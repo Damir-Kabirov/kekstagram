@@ -16,7 +16,7 @@ createPost(25).forEach(({url,likes,comments})=>{
 pictureContainer.append(pictureFragment)
 
 pictureContainer.addEventListener('click',(evt)=>{
-  evt.preventDefault()
+  // evt.preventDefault()
   if(evt.target.parentElement.classList.contains("picture")){
     showBigPicture(evt.target.parentElement)
   }
