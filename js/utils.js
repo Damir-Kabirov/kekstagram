@@ -1,3 +1,4 @@
+const errorMessage = document.querySelector(".error-modal")
 function createRandomNumber(min=0,max){
   let minNumber = Math.ceil(min);
   let maxNumber = Math.floor(max);
@@ -16,4 +17,12 @@ function clearChildren(parent){
   }
 }
 
-export {createRandomNumber,clearChildren}
+function showErrorMessage (errorText){
+    errorMessage.querySelector('p').textContent=errorText
+    errorMessage.classList.remove('hidden')
+    setTimeout(()=>{
+      errorMessage.classList.add('hidden')
+    },5000)
+}
+
+export {createRandomNumber,clearChildren,showErrorMessage}

@@ -1,11 +1,9 @@
 import {clearChildren} from "./utils.js"
-import {createPost} from "./creat-post.js"
 
 const body = document.querySelector('body')
 const bigPicture = document.querySelector(".big-picture")
 const bigPictureImg = bigPicture.querySelector(".big-picture__img>img")
 const bigPictureLike = bigPicture.querySelector(".likes-count")
-const socialCommentCount = bigPicture.querySelector('.social__comment-count')
 const commentsCount = bigPicture.querySelector(".comments-count")
 const comments = bigPicture.querySelector(".social__comments")
 const descriptionPicture = bigPicture.querySelector('.social__caption')
@@ -14,38 +12,35 @@ const commentsCountActive = bigPicture.querySelector('.comments-count_active')
 const btnComentsLoader = bigPicture.querySelector('.social__comments-loader')
 let lastComents = []
 
-// showBigPicture()
 function showBigPicture (el){
   bigPicture.classList.remove("hidden")
   body.classList.add("modal-open")
-  const dataRandom = createPost(1)
-  renderBigPicture(el,dataRandom)
-  // socialCommentCount.classList.add("hidden")
-  // comments.classList.add("hidden")
+  renderBigPicture(el)
   btnClose.addEventListener('click',closeBigPicture)
   document.addEventListener('keydown',closeBigPictureKeyboard)
   btnComentsLoader.addEventListener("click",commentsLoader)
 }
 
 
-function renderBigPicture(data,dataRandom){
-  const dataImg = data.querySelector("img")
-  const likeCount = data.querySelector(".picture__likes").textContent
-  bigPictureImg.src = dataImg.src
-  bigPictureLike.textContent=likeCount
+function renderBigPicture(data){
+  console.log(data)
+  bigPictureImg.src = data.url
+  bigPictureLike.textContent=data.likes
   clearChildren(comments)
   commentsCountActive.textContent=0
-  commentsCount.textContent=dataRandom[0].comments.length
-  const commentHtml =  createCommentHtml(dataRandom[0].comments)
+  commentsCount.textContent=data.comments.length
+  const commentHtml =  createCommentHtml(data.comments)
   comments.insertAdjacentHTML('beforeend',commentHtml)
-  descriptionPicture.textContent = dataRandom.description
+  descriptionPicture.textContent = data.description
   if(lastComents.length>0){
     btnComentsLoader.style.display="block"
+  }
+  else{
+    btnComentsLoader.style.display="none"
   }
 }
 
 function createCommentHtml(commentArray){
-
   lastComents=[]
   let newComments = ''
   commentArray.forEach((comment,i) => {

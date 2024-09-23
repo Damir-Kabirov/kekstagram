@@ -1403,3 +1403,12 @@ main {
 .hidden {
   display: none;
 }
+.error-modal{
+  width: 100%;
+  text-align: center;
+  color: #cccccc;
+  font-size: 16px;
+  background-color: red;
+  min-height: 25px;
+  text-transform:none;
+}
