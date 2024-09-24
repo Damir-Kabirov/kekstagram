@@ -1,3 +1,6 @@
+import { createErrorModal,createSuccessModal } from "./message-modal.js"
+import {sendingPost} from './api.js'
+
 const body = document.querySelector('body')
 const uploadFile = body.querySelector("#upload-file")
 const formImgDownload = body.querySelector(".img-upload__form")
@@ -44,6 +47,7 @@ function openFormUpload(){
 }
 
 function closeFormUpload(){
+  btnSubmit.disabled = false
   formUploadImg.classList.add('hidden')
   body.classList.remove("modal-open")
   closeFormBtn.removeEventListener("click",closeFormUpload)
@@ -95,8 +99,11 @@ function changeEfectImg (evt){
 }
 
 function submitFormUpload(evt){
-  if(!pristine.validate()){
-     evt.preventDefault();
+  evt.preventDefault();
+  if(pristine.validate()){
+    btnSubmit.disabled = true
+    const dataForm =  new FormData(formImgDownload);
+    sendingPost({createSuccessModal,createErrorModal,closeFormUpload},dataForm)
   }
 }
 

@@ -4,6 +4,7 @@ function getPicture (collbackResult,errorHandler){
     if(res.ok){
       return res.json()
     }
+    console.log(1)
     throw new Error ('Ошибка получения данных,перезагрузите страницу')
     }
   )
@@ -13,4 +14,23 @@ function getPicture (collbackResult,errorHandler){
   })
 }
 
-export {getPicture}
+function sendingPost (callbacks,body){
+  const {createSuccessModal,createErrorModal,closeFormUpload} = callbacks
+  fetch('https://25.javascript.htmlacademy.pro/kekstagram',
+      {
+          method:'POST',
+          body
+      }).then(res=>{
+          if(res.ok){
+            createSuccessModal('Данные успешно отправлены на сервер')
+              return res
+          }
+          else{
+            createErrorModal('Ошибка отправки данных')
+          }
+      }).then(()=>closeFormUpload())
+}
+
+
+
+export {getPicture,sendingPost}
