@@ -1,6 +1,7 @@
+
+import {createEffectSlider,hiddenSlider} from './noui-slider.js'
 import { createErrorModal,createSuccessModal } from "./message-modal.js"
 import {sendingPost} from './api.js'
-
 const body = document.querySelector('body')
 const uploadFile = body.querySelector("#upload-file")
 const formImgDownload = body.querySelector(".img-upload__form")
@@ -11,14 +12,13 @@ const scaleControlSmaller = formUploadImg.querySelector(".scale__control--smalle
 const scaleControlBigger = formUploadImg.querySelector(".scale__control--bigger")
 const imgPreview = formUploadImg.querySelector(".img-upload__preview>img")
 const effectsRadio  = formUploadImg.querySelectorAll(".effects__radio")
-const effectLevel = formUploadImg.querySelector(".effect-level")
 const effectList = {
-  "none":"effects__preview--none",
-  "chrome":"effects__preview--chrome",
-  "sepia":"effects__preview--sepia",
-  "marvin":"effects__preview--marvin",
-  "phobos":"effects__preview--phobos",
-  "heat":"effects__preview--heat"
+  "none":{"class":"effects__preview--none"},
+  "chrome":{"class":"effects__preview--chrome","min":0,"max":1,"step":0.1,"typeStep":"","filter":"grayscale"},
+  "sepia":{"class":"effects__preview--sepia","min":0,"max":1,"step":0.1,"typeStep":"","filter":"sepia"},
+  "marvin":{"class":"effects__preview--marvin","min":1,"max":100,"step":1,"typeStep":"%","filter":"invert"},
+  "phobos":{"class":"effects__preview--phobos","min":0,"max":3,"step":0.1,"typeStep":"px","filter":"blur"},
+  "heat":{"class":"effects__preview--heat","min":1,"max":3,"step":0.1,"typeStep":"","filter":"brightness"},
 }
 const inputHashtags = formImgDownload.querySelector(".text__hashtags")
 const btnSubmit = document.querySelector("#upload-submit")
@@ -56,9 +56,18 @@ function closeFormUpload(){
   scaleControlBigger.removeEventListener("click",addToScaleImg)
   effectsRadio.forEach(radioBtn => {radioBtn.removeEventListener("click",changeEfectImg)});
   formImgDownload.removeEventListener("submit",submitFormUpload)
-  formImgDownload.reset()
+  resetForm()
 
 }
+
+
+function resetForm(){
+  formImgDownload.reset()
+  hiddenSlider()
+  changeScaleImg(100)
+}
+
+
 function closeFormIsKeyboard(evt){
   if(!evt.target.classList.contains("text__hashtags") && !evt.target.classList.contains("text__description")){
     if(evt.key==="Escape"){
@@ -70,7 +79,7 @@ function closeFormIsKeyboard(evt){
 
 function ruduseToScaleImg(){
   let scaleValue = +scaleControlValue.value.slice(0,-1)-25
-  if(scaleValue>=0){
+  if(scaleValue>=25){
     scaleControlValue.value = scaleValue + '%'
     changeScaleImg(scaleValue)
   }
@@ -85,17 +94,26 @@ function addToScaleImg(){
 }
 
 function changeScaleImg(percent){
-  imgPreview.style.transform =`scale (${percent*0.01})`
+  imgPreview.style.transform =`scale(${percent/100})`
+
 }
 
 function changeEfectImg (evt){
-  for(key in effectList){
-    imgPreview.classList.remove(effectList[key])
+  for( let key in effectList){
+    imgPreview.classList.remove(effectList[key]['class'])
   }
   let effectName = evt.target.id.split("-")[1]
-  let className = effectList[effectName]
+  let className = effectList[effectName]["class"]
   imgPreview.classList.add(className)
-  effectName==="none"?effectLevel.style.display = "none":effectLevel.style.display = "block"
+  if(className!=="effects__preview--none"){
+    createEffectSlider(
+      effectList[effectName],
+    )
+  }
+  else{
+    hiddenSlider()
+  }
+  // effectName==="none"?effectLevel.style.display = "none":effectLevel.style.display = "block"
 }
 
 function submitFormUpload(evt){
