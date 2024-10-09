@@ -1,4 +1,4 @@
-function getPicture (collbackResult,errorHandler){
+function getPicture (collbackResult,errorHandler,collbackOther){
   fetch('https://25.javascript.htmlacademy.pro/kekstagram/data')
   .then((res)=>{
     if(res.ok){
@@ -8,7 +8,7 @@ function getPicture (collbackResult,errorHandler){
     throw new Error ('Ошибка получения данных,перезагрузите страницу')
     }
   )
-  .then(data=>collbackResult(data))
+  .then(data=>collbackResult(data,collbackOther))
   .catch(err=>{
     errorHandler(err)
   })

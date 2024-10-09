@@ -34,6 +34,7 @@ pristine.addValidator(inputHashtags,hashtagValidate,'Не корректный �
 
 
 function openFormUpload(){
+  // imgPreview.src =uploadFile.value
   formUploadImg.classList.remove('hidden')
   body.classList.add("modal-open")
   closeFormBtn.addEventListener("click",closeFormUpload)
