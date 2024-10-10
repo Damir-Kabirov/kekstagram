@@ -19,6 +19,7 @@ pictureContainer.addEventListener('click',(evt)=>{
   cb(posts)
 }
 
+
 function renderPost(posts){
   clearChildren(pictureContainer,'picture')
   posts.forEach(({id,url,likes,comments})=>{

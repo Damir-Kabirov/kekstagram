@@ -89,4 +89,4 @@ function getRandomElements(arr, count) {
 }
 
 
-export {createRandomNumber,clearChildren,showErrorMessage,getRandomElements}
+export {createRandomNumber,clearChildren,showErrorMessage,getRandomElements,debounce}

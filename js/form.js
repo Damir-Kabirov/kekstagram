@@ -12,6 +12,7 @@ const scaleControlSmaller = formUploadImg.querySelector(".scale__control--smalle
 const scaleControlBigger = formUploadImg.querySelector(".scale__control--bigger")
 const imgPreview = formUploadImg.querySelector(".img-upload__preview>img")
 const effectsRadio  = formUploadImg.querySelectorAll(".effects__radio")
+const FILE_TYPES = ['jpg','gif','png']
 const effectList = {
   "none":{"class":"effects__preview--none"},
   "chrome":{"class":"effects__preview--chrome","min":0,"max":1,"step":0.1,"typeStep":"","filter":"grayscale"},
@@ -34,7 +35,7 @@ pristine.addValidator(inputHashtags,hashtagValidate,'Не корректный �
 
 
 function openFormUpload(){
-  // imgPreview.src =uploadFile.value
+  showImgLoad(uploadFile.files[0])
   formUploadImg.classList.remove('hidden')
   body.classList.add("modal-open")
   closeFormBtn.addEventListener("click",closeFormUpload)
@@ -45,6 +46,16 @@ function openFormUpload(){
   radioBtn.addEventListener("click",changeEfectImg)
   formImgDownload.addEventListener("submit",submitFormUpload)
 });
+}
+
+function showImgLoad(file){
+  const fileName = file.name.toLowerCase()
+  const matches = FILE_TYPES.some((tp)=>{
+    return fileName.endsWith(tp)
+  })
+  if(matches){
+    imgPreview.src = URL.createObjectURL(file)
+  }
 }
 
 function closeFormUpload(){
